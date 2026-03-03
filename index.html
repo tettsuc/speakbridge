@@ -8,11 +8,8 @@
 * { box-sizing: border-box; margin: 0; padding: 0; }
 body {
   font-family: 'Hiragino Sans', 'Meiryo', sans-serif;
-  background: #F0F4F8;
-  min-height: 100vh;
-  display: flex;
-  justify-content: center;
-  align-items: flex-start;
+  background: #F0F4F8; min-height: 100vh;
+  display: flex; justify-content: center; align-items: flex-start;
 }
 #app {
   width: 100%; max-width: 440px; background: #fff;
@@ -21,123 +18,73 @@ body {
 }
 .screen { display: none; flex-direction: column; flex: 1; }
 .screen.active { display: flex; }
-
-/* ホーム */
 .home-body { overflow-y: auto; padding: 32px 22px 40px; flex: 1; }
 .logo { font-size: 30px; font-weight: 900; color: #1E293B; letter-spacing: -1px; }
 .logo-sub { font-size: 13px; color: #64748B; margin-top: 3px; margin-bottom: 6px; }
-.free-badge {
-  display: inline-block; background: #D1FAE5; color: #065F46;
-  font-size: 11px; font-weight: 700; padding: 3px 10px; border-radius: 99px; margin-bottom: 28px;
-}
-.my-sounds {
-  background: linear-gradient(135deg, #EFF6FF, #F0F9FF);
-  border: 1px solid #BFDBFE; border-radius: 16px; padding: 14px 16px; margin-bottom: 26px;
-}
+.free-badge { display: inline-block; background: #D1FAE5; color: #065F46; font-size: 11px; font-weight: 700; padding: 3px 10px; border-radius: 99px; margin-bottom: 28px; }
+.my-sounds { background: linear-gradient(135deg,#EFF6FF,#F0F9FF); border: 1px solid #BFDBFE; border-radius: 16px; padding: 14px 16px; margin-bottom: 26px; }
 .my-sounds-title { font-size: 12px; font-weight: 700; color: #3B82F6; margin-bottom: 8px; }
 .section-title { font-size: 14px; font-weight: 800; color: #1E293B; margin-bottom: 12px; }
 .card-list { display: flex; flex-direction: column; gap: 8px; }
-.card {
-  display: flex; align-items: center; justify-content: space-between;
-  background: #fff; border: 1.5px solid #E2E8F0; border-radius: 14px;
-  padding: 14px 16px; cursor: pointer; text-align: left;
-  box-shadow: 0 1px 4px rgba(0,0,0,0.05); transition: transform 0.1s;
-}
+.card { display: flex; align-items: center; justify-content: space-between; background: #fff; border: 1.5px solid #E2E8F0; border-radius: 14px; padding: 14px 16px; cursor: pointer; text-align: left; box-shadow: 0 1px 4px rgba(0,0,0,0.05); transition: transform 0.1s; }
 .card:active { transform: scale(0.98); }
-.tag {
-  display: inline-block; font-size: 11px; padding: 2px 8px;
-  border-radius: 99px; font-weight: 700; margin-right: 4px;
-}
-
-/* ドリル画面 */
-.drill-header {
-  padding: 14px 20px; border-bottom: 1px solid #E2E8F0; background: #fff; flex-shrink: 0;
-}
-.back-btn {
-  background: none; border: none; cursor: pointer; color: #64748B;
-  font-size: 13px; padding: 0; margin-bottom: 6px; font-family: inherit;
-}
-.drill-body { flex: 1; overflow-y: auto; padding: 22px; }
-.progress-bar { display: flex; gap: 5px; margin-bottom: 24px; }
+.tag { display: inline-block; font-size: 11px; padding: 2px 8px; border-radius: 99px; font-weight: 700; margin-right: 4px; }
+.drill-header { padding: 14px 20px; border-bottom: 1px solid #E2E8F0; background: #fff; flex-shrink: 0; }
+.back-btn { background: none; border: none; cursor: pointer; color: #64748B; font-size: 13px; padding: 0; margin-bottom: 6px; font-family: inherit; }
+.drill-body { flex: 1; overflow-y: auto; padding: 20px; }
+.progress-bar { display: flex; gap: 5px; margin-bottom: 20px; }
 .progress-seg { flex: 1; height: 5px; border-radius: 3px; background: #E2E8F0; transition: background 0.4s; }
-
-.word-card {
-  border-radius: 20px; padding: 28px 24px; text-align: center; margin-bottom: 24px;
-}
-.word-hint { font-size: 12px; font-weight: 700; margin-bottom: 10px; }
-.word-main { font-size: 54px; font-weight: 900; color: #1E293B; letter-spacing: 6px; }
-.word-reading { font-size: 16px; color: #64748B; margin-top: 8px; letter-spacing: 3px; }
-.word-count { font-size: 12px; color: #94A3B8; margin-top: 6px; }
-
-/* マイクエリア */
-.mic-area { text-align: center; margin-bottom: 20px; }
-.mic-btn {
-  border: none; border-radius: 50%; width: 84px; height: 84px;
-  font-size: 34px; cursor: pointer; color: #fff; transition: all 0.2s;
-}
+.word-card { border-radius: 20px; padding: 22px 20px; text-align: center; margin-bottom: 20px; }
+.word-hint { font-size: 12px; font-weight: 700; margin-bottom: 8px; }
+.word-main { font-size: 50px; font-weight: 900; color: #1E293B; letter-spacing: 6px; }
+.word-reading { font-size: 15px; color: #64748B; margin-top: 6px; letter-spacing: 3px; }
+.word-count { font-size: 12px; color: #94A3B8; margin-top: 4px; }
+.mic-area { text-align: center; margin-bottom: 16px; }
+.mic-btn { border: none; border-radius: 50%; width: 80px; height: 80px; font-size: 32px; cursor: pointer; color: #fff; transition: all 0.2s; }
 .mic-btn:disabled { opacity: 0.4; cursor: not-allowed; }
 .mic-status { font-size: 13px; color: #64748B; margin-top: 10px; }
-
-/* 波形 */
-.waveform {
-  display: flex; align-items: center; justify-content: center;
-  gap: 3px; height: 36px; margin: 8px auto;
-}
+.waveform { display: flex; align-items: center; justify-content: center; gap: 3px; height: 34px; margin: 6px auto; }
 .wave-bar { width: 4px; border-radius: 2px; background: #CBD5E1; height: 25%; }
-.wave-bar.active {
-  background: #3B82F6;
-  animation: wv 0.5s ease-in-out infinite alternate;
-}
+.wave-bar.active { background: #3B82F6; animation: wv 0.5s ease-in-out infinite alternate; }
 @keyframes wv { from { transform: scaleY(0.4); } to { transform: scaleY(2.0); } }
-
-/* 認識結果 */
-.result-box {
-  background: #F8FAFC; border: 1px solid #E2E8F0;
-  border-radius: 14px; padding: 14px 16px; margin-bottom: 14px; text-align: center;
-}
-.result-label { font-size: 11px; color: #94A3B8; margin-bottom: 6px; }
-.result-word { font-size: 26px; font-weight: 700; color: #1E293B; }
-
-/* フィードバック */
-.fb-box { border-radius: 18px; padding: 18px; margin-bottom: 16px; }
+.result-box { background: #F8FAFC; border: 1px solid #E2E8F0; border-radius: 14px; padding: 12px 16px; margin-bottom: 12px; text-align: center; }
+.result-label { font-size: 11px; color: #94A3B8; margin-bottom: 4px; }
+.result-word { font-size: 24px; font-weight: 700; color: #1E293B; }
+.fb-box { border-radius: 18px; padding: 16px; margin-bottom: 14px; }
 .fb-box.perfect { background: #F0FDF4; border: 2px solid #86EFAC; }
 .fb-box.good    { background: #EFF6FF; border: 2px solid #93C5FD; }
 .fb-box.retry   { background: #FFFBEB; border: 2px solid #FDE68A; }
 .fb-box.miss    { background: #FEF2F2; border: 2px solid #FECACA; }
-.fb-score { font-size: 24px; margin-bottom: 8px; }
-.fb-title { font-size: 17px; font-weight: 800; margin-bottom: 6px; }
-.fb-msg { font-size: 14px; line-height: 1.6; }
-.fb-tip { font-size: 13px; margin-top: 10px; padding: 8px 12px; border-radius: 10px; background: rgba(255,255,255,0.7); }
+.fb-score { font-size: 22px; margin-bottom: 6px; }
+.fb-title { font-size: 16px; font-weight: 800; margin-bottom: 4px; }
+.fb-msg { font-size: 13px; line-height: 1.6; }
+.fb-tip { font-size: 12px; margin-top: 8px; padding: 8px 10px; border-radius: 10px; background: rgba(255,255,255,0.7); }
 
-.next-btn {
-  width: 100%; padding: 14px; color: #fff; border: none; border-radius: 14px;
-  font-weight: 700; font-size: 15px; cursor: pointer; margin-top: 14px;
-  font-family: inherit; transition: opacity 0.2s;
+/* 口腔図 */
+.mouth-diagram {
+  margin-top: 14px; background: #fff; border-radius: 14px;
+  padding: 12px; border: 1px solid #E2E8F0;
 }
+.mouth-diagram-title {
+  font-size: 11px; font-weight: 700; color: #64748B;
+  text-align: center; margin-bottom: 8px;
+}
+.mouth-diagram svg { display: block; margin: 0 auto; }
+.mouth-diagram-caption {
+  font-size: 11px; color: #475569; text-align: center;
+  margin-top: 6px; line-height: 1.5;
+}
+
+.next-btn { width: 100%; padding: 13px; color: #fff; border: none; border-radius: 14px; font-weight: 700; font-size: 14px; cursor: pointer; margin-top: 12px; font-family: inherit; }
 .next-btn:disabled { opacity: 0.4; cursor: not-allowed; }
-
-/* エラー */
-.error-box {
-  background: #FEF2F2; border: 1px solid #FECACA; border-radius: 12px;
-  padding: 10px 14px; margin-bottom: 14px; font-size: 13px; color: #DC2626;
-  line-height: 1.6;
-}
-
-/* 完了画面 */
-.complete-body {
-  flex: 1; display: flex; flex-direction: column;
-  align-items: center; justify-content: center; padding: 32px 24px; text-align: center;
-}
+.error-box { background: #FEF2F2; border: 1px solid #FECACA; border-radius: 12px; padding: 10px 14px; margin-bottom: 12px; font-size: 13px; color: #DC2626; line-height: 1.6; }
+.complete-body { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 32px 24px; text-align: center; }
 .complete-emoji { font-size: 64px; margin-bottom: 16px; }
-.complete-title { font-size: 24px; font-weight: 900; color: #1E293B; margin-bottom: 8px; }
-.complete-msg { font-size: 15px; color: #64748B; line-height: 1.7; margin-bottom: 32px; }
-.complete-score { font-size: 36px; font-weight: 900; margin-bottom: 6px; }
-.complete-score-label { font-size: 13px; color: #64748B; margin-bottom: 28px; }
-.home-btn {
-  padding: 14px 32px; background: #3B82F6; color: #fff;
-  border: none; border-radius: 14px; font-weight: 700; font-size: 15px;
-  cursor: pointer; font-family: inherit;
-}
+.complete-title { font-size: 22px; font-weight: 900; color: #1E293B; margin-bottom: 8px; }
+.complete-msg { font-size: 14px; color: #64748B; line-height: 1.7; margin-bottom: 28px; }
+.complete-score { font-size: 34px; font-weight: 900; margin-bottom: 4px; }
+.complete-score-label { font-size: 13px; color: #64748B; margin-bottom: 24px; }
+.home-btn { padding: 14px 32px; background: #3B82F6; color: #fff; border: none; border-radius: 14px; font-weight: 700; font-size: 15px; cursor: pointer; font-family: inherit; }
 </style>
 </head>
 <body>
@@ -149,14 +96,12 @@ body {
       <div class="logo">SpeakBridge</div>
       <div class="logo-sub">音の練習モード</div>
       <div class="free-badge">✅ 完全無料・APIキー不要</div>
-
       <div class="my-sounds">
         <div class="my-sounds-title">🎯 あなたの練習ポイント</div>
         <span class="tag" style="background:#DBEAFE;color:#1D4ED8">さ行</span>
         <span class="tag" style="background:#EDE9FE;color:#5B21B6">た行</span>
         <span class="tag" style="background:#FCE7F3;color:#9D174D">か行・が行</span>
       </div>
-
       <div class="section-title">🔤 練習する音を選ぼう</div>
       <div class="card-list" id="drill-list"></div>
     </div>
@@ -176,31 +121,33 @@ body {
         <div class="word-reading" id="word-reading"></div>
         <div class="word-count" id="word-count"></div>
       </div>
-
       <div class="mic-area">
         <button class="mic-btn" id="mic-btn" onclick="startRecording()">🎤</button>
         <div class="waveform" id="waveform"></div>
         <div class="mic-status" id="mic-status">ボタンを押して声に出して読もう</div>
       </div>
-
       <div id="result-box" style="display:none" class="result-box">
         <div class="result-label">🎤 認識された言葉</div>
         <div class="result-word" id="result-word"></div>
       </div>
-
       <div id="error-box" style="display:none" class="error-box"></div>
-
       <div id="fb-box" style="display:none" class="fb-box">
         <div class="fb-score" id="fb-score"></div>
         <div class="fb-title" id="fb-title"></div>
         <div class="fb-msg" id="fb-msg"></div>
         <div class="fb-tip" id="fb-tip" style="display:none"></div>
+        <!-- 口腔図エリア -->
+        <div class="mouth-diagram" id="mouth-diagram" style="display:none">
+          <div class="mouth-diagram-title">🦷 舌の位置ガイド</div>
+          <div id="mouth-svg-container"></div>
+          <div class="mouth-diagram-caption" id="mouth-caption"></div>
+        </div>
         <button class="next-btn" id="next-btn" onclick="nextWord()"></button>
       </div>
     </div>
   </div>
 
-  <!-- 完了画面 -->
+  <!-- 完了 -->
   <div id="screen-complete" class="screen">
     <div class="complete-body">
       <div class="complete-emoji">🎉</div>
@@ -214,36 +161,113 @@ body {
 
 </div>
 <script>
+// ---- 口腔図SVG定義 ----
+// 共通パーツを関数で生成（サイズ小さめ：240x190）
+function mouthBase(innerColor) {
+  return `
+  <ellipse cx="120" cy="95" rx="95" ry="75" fill="#FDDFD0" stroke="#E8A898" stroke-width="2.5"/>
+  <ellipse cx="120" cy="99" rx="76" ry="57" fill="${innerColor||'#7C1A1A'}"/>
+  <path d="M45,78 Q120,50 195,78 Q178,100 120,96 Q62,100 45,78Z" fill="#F9AFAF"/>
+  <rect x="76" y="78" width="13" height="17" rx="3" fill="white" stroke="#DDD" stroke-width="1.5"/>
+  <rect x="92" y="76" width="15" height="19" rx="3" fill="white" stroke="#DDD" stroke-width="1.5"/>
+  <rect x="110" y="76" width="15" height="19" rx="3" fill="white" stroke="#DDD" stroke-width="1.5"/>
+  <rect x="128" y="76" width="15" height="19" rx="3" fill="white" stroke="#DDD" stroke-width="1.5"/>
+  <rect x="146" y="78" width="13" height="17" rx="3" fill="white" stroke="#DDD" stroke-width="1.5"/>
+  <rect x="76" y="115" width="13" height="15" rx="3" fill="white" stroke="#DDD" stroke-width="1.5"/>
+  <rect x="92" y="115" width="15" height="17" rx="3" fill="white" stroke="#DDD" stroke-width="1.5"/>
+  <rect x="110" y="115" width="15" height="17" rx="3" fill="white" stroke="#DDD" stroke-width="1.5"/>
+  <rect x="128" y="115" width="15" height="17" rx="3" fill="white" stroke="#DDD" stroke-width="1.5"/>
+  <rect x="146" y="115" width="13" height="15" rx="3" fill="white" stroke="#DDD" stroke-width="1.5"/>`;
+}
+
+const MOUTH_DIAGRAMS = {
+  "さ行": {
+    svg: `<svg width="240" height="190" viewBox="0 0 240 190">
+      ${mouthBase()}
+      <ellipse cx="120" cy="135" rx="52" ry="22" fill="#FF6B6B" stroke="#E04040" stroke-width="2.5"/>
+      <path d="M102,118 Q120,98 138,118" fill="#FF4444" stroke="#CC2222" stroke-width="2"/>
+      <circle cx="120" cy="100" r="9" fill="#3B82F6" opacity="0.9"/>
+      <text x="120" y="104" text-anchor="middle" font-size="10" fill="white" font-weight="bold">舌先</text>
+      <line x1="120" y1="89" x2="120" y2="66" stroke="#3B82F6" stroke-width="2" stroke-dasharray="4,3"/>
+      <polygon points="115,68 120,58 125,68" fill="#3B82F6"/>
+      <text x="135" y="62" font-size="10" fill="#3B82F6" font-weight="bold">息</text>
+      <text x="120" y="185" text-anchor="middle" font-size="11" fill="#3B82F6" font-weight="bold">舌先を上歯茎に近づけ・隙間から息</text>
+    </svg>`,
+    caption: "舌先（青丸）を上の歯茎に近づけ、隙間から「シュー」と息を出します"
+  },
+  "た行": {
+    svg: `<svg width="240" height="190" viewBox="0 0 240 190">
+      ${mouthBase()}
+      <ellipse cx="120" cy="135" rx="52" ry="22" fill="#FF6B6B" stroke="#E04040" stroke-width="2.5"/>
+      <path d="M100,116 Q120,94 140,116" fill="#FF4444" stroke="#CC2222" stroke-width="2"/>
+      <rect x="98" y="94" width="44" height="7" rx="3.5" fill="#8B5CF6" opacity="0.9"/>
+      <text x="120" y="100" text-anchor="middle" font-size="9" fill="white" font-weight="bold">密着！</text>
+      <line x1="120" y1="103" x2="120" y2="118" stroke="#8B5CF6" stroke-width="2" stroke-dasharray="3,2"/>
+      <polygon points="115,116 120,126 125,116" fill="#8B5CF6"/>
+      <text x="120" y="185" text-anchor="middle" font-size="11" fill="#8B5CF6" font-weight="bold">舌先を上歯の裏に密着 → パッと離す</text>
+    </svg>`,
+    caption: "舌先を上の前歯の裏にしっかりつけて、「タッ」とパッと離します"
+  },
+  "か行": {
+    svg: `<svg width="240" height="190" viewBox="0 0 240 190">
+      ${mouthBase()}
+      <ellipse cx="120" cy="135" rx="52" ry="22" fill="#FF6B6B" stroke="#E04040" stroke-width="2.5"/>
+      <ellipse cx="148" cy="112" rx="20" ry="14" fill="#FF4444" stroke="#CC2222" stroke-width="2"/>
+      <circle cx="148" cy="100" r="9" fill="#EC4899" opacity="0.9"/>
+      <text x="148" y="104" text-anchor="middle" font-size="9" fill="white" font-weight="bold">奥</text>
+      <rect x="30" y="148" width="68" height="30" rx="8" fill="#FEE2E2" stroke="#FECACA" stroke-width="1.5"/>
+      <text x="64" y="161" text-anchor="middle" font-size="14">✕</text>
+      <text x="64" y="173" text-anchor="middle" font-size="9" fill="#DC2626" font-weight="bold">声帯振動なし</text>
+      <text x="120" y="185" text-anchor="middle" font-size="11" fill="#EC4899" font-weight="bold">舌の奥を上あご奥に・声帯は震わせない</text>
+    </svg>`,
+    caption: "舌の奥が上あごの奥に当たります。のどに手を当てても振動しません"
+  },
+  "が行": {
+    svg: `<svg width="240" height="190" viewBox="0 0 240 190">
+      ${mouthBase()}
+      <ellipse cx="120" cy="135" rx="52" ry="22" fill="#FF6B6B" stroke="#E04040" stroke-width="2.5"/>
+      <ellipse cx="148" cy="112" rx="20" ry="14" fill="#FF4444" stroke="#CC2222" stroke-width="2"/>
+      <circle cx="148" cy="100" r="9" fill="#EC4899" opacity="0.9"/>
+      <text x="148" y="104" text-anchor="middle" font-size="9" fill="white" font-weight="bold">奥</text>
+      <rect x="30" y="148" width="68" height="30" rx="8" fill="#D1FAE5" stroke="#6EE7B7" stroke-width="1.5"/>
+      <path d="M36,162 Q42,156 48,162 Q54,168 60,162 Q66,156 72,162 Q78,168 84,162 Q90,156 96,162" stroke="#10B981" stroke-width="2.5" fill="none"/>
+      <text x="64" y="175" text-anchor="middle" font-size="9" fill="#065F46" font-weight="bold">声帯を震わせる</text>
+      <text x="120" y="185" text-anchor="middle" font-size="11" fill="#EC4899" font-weight="bold">舌の奥を上あご奥に・のどを震わせる</text>
+    </svg>`,
+    caption: "「か」と舌の動きは同じです。のどに手を当てると振動（ブルブル）が感じられます"
+  },
+};
+
 // ---- データ ----
 const DRILLS = [
   {
     sound: "さ行", label: "さ・し・す・せ・そ", color: "#3B82F6",
     words: [
-      { text:"先生", reading:"せんせい", tip:"「せ」は口を横に広げて" },
-      { text:"仕事", reading:"しごと",   tip:"「し」は歯の隙間から息を出して" },
-      { text:"相談", reading:"そうだん", tip:"「そ」は口を丸めて" },
-      { text:"食事", reading:"しょくじ", tip:"「し」をゆっくり意識して" },
-      { text:"準備", reading:"じゅんび", tip:"「じゅ」は「じ」+「ゆ」の組み合わせ" },
+      { text:"先生", reading:"せんせい", diagram:"さ行", tip:"「せ」は口を横に広げて" },
+      { text:"仕事", reading:"しごと",   diagram:"さ行", tip:"「し」は歯の隙間から息を出して" },
+      { text:"相談", reading:"そうだん", diagram:"さ行", tip:"「そ」は口を丸めて" },
+      { text:"食事", reading:"しょくじ", diagram:"さ行", tip:"「し」をゆっくり意識して" },
+      { text:"準備", reading:"じゅんび", diagram:"さ行", tip:"「じゅ」は「じ」+「ゆ」の組み合わせ" },
     ]
   },
   {
     sound: "た行", label: "た・ち・つ・て・と", color: "#8B5CF6",
     words: [
-      { text:"大切", reading:"たいせつ", tip:"「た」は舌を上歯の裏につけて" },
-      { text:"食べる", reading:"たべる",  tip:"「た」を強めに意識して" },
-      { text:"伝える", reading:"つたえる",tip:"「つ」は口を少しすぼめて" },
-      { text:"特別", reading:"とくべつ", tip:"「と」は口を丸くして" },
-      { text:"手伝い", reading:"てつだい", tip:"「て」は口を大きく開いて" },
+      { text:"大切", reading:"たいせつ", diagram:"た行", tip:"「た」は舌を上歯の裏につけて" },
+      { text:"食べる", reading:"たべる",  diagram:"た行", tip:"「た」を強めに意識して" },
+      { text:"伝える", reading:"つたえる",diagram:"た行", tip:"「つ」は口を少しすぼめて" },
+      { text:"特別", reading:"とくべつ", diagram:"た行", tip:"「と」は口を丸くして" },
+      { text:"手伝い", reading:"てつだい",diagram:"た行", tip:"「て」は口を大きく開いて" },
     ]
   },
   {
     sound: "か行・が行", label: "か↔が の区別", color: "#EC4899",
     words: [
-      { text:"科学", reading:"かがく",   tip:"「か」は息を出す・「が」は喉を震わせる" },
-      { text:"家具", reading:"かぐ",     tip:"「か」→「ぐ」で喉の感覚が変わるか意識して" },
-      { text:"鏡",   reading:"かがみ",   tip:"「か」と「が」が交互に出てくる練習に最適" },
-      { text:"学校", reading:"がっこう", tip:"「が」は喉に手を当てて振動を感じてみて" },
-      { text:"記念", reading:"きねん",   tip:"「き」は「か」行の仲間。軽く息を出して" },
+      { text:"科学",  reading:"かがく",   diagram:"か行", tip:"「か」は息を出す・「が」は喉を震わせる" },
+      { text:"家具",  reading:"かぐ",     diagram:"か行", tip:"「か」→「ぐ」で喉の感覚が変わるか意識して" },
+      { text:"鏡",    reading:"かがみ",   diagram:"が行", tip:"「か」と「が」が交互に出てくる練習に最適" },
+      { text:"学校",  reading:"がっこう", diagram:"が行", tip:"「が」は喉に手を当てて振動を感じてみて" },
+      { text:"記念",  reading:"きねん",   diagram:"か行", tip:"「き」は「か」行の仲間。軽く息を出して" },
     ]
   },
 ];
@@ -259,15 +283,11 @@ document.getElementById("drill-list").innerHTML = DRILLS.map(d => `
       <div style="font-size:12px;color:#64748B;margin-top:2px">${d.label}</div>
       <div style="margin-top:6px;font-size:11px;color:#94A3B8">${d.words.length}単語</div>
     </div>
-    <div style="background:${d.color}18;border-radius:10px;padding:6px 12px;font-size:12px;color:${d.color};font-weight:700">
-      練習する →
-    </div>
+    <div style="background:${d.color}18;border-radius:10px;padding:6px 12px;font-size:12px;color:${d.color};font-weight:700">練習する →</div>
   </div>`).join("");
 
 // ---- 画面遷移 ----
-function showHome() {
-  switchScreen("screen-home");
-}
+function showHome() { switchScreen("screen-home"); }
 function switchScreen(id) {
   document.querySelectorAll(".screen").forEach(s => s.classList.remove("active"));
   document.getElementById(id).classList.add("active");
@@ -276,24 +296,16 @@ function switchScreen(id) {
 // ---- ドリル開始 ----
 function startDrill(sound) {
   drill = DRILLS.find(d => d.sound === sound);
-  step = 0;
-  sessionScores = [];
+  step = 0; sessionScores = [];
   switchScreen("screen-drill");
   renderStep();
 }
 
 function renderStep() {
-  const w = drill.words[step];
-  const c = drill.color;
-
-  // ヘッダー
+  const w = drill.words[step], c = drill.color;
   document.getElementById("drill-title").textContent = drill.sound + "の練習";
-
-  // 進捗バー
   document.getElementById("drill-progress").innerHTML =
     drill.words.map((_,i) => `<div class="progress-seg" style="background:${i<step?c:(i===step?c+'88':'#E2E8F0')}"></div>`).join("");
-
-  // 単語カード
   document.getElementById("word-card").style.background = `linear-gradient(135deg,${c}18,${c}06)`;
   document.getElementById("word-card").style.border = `2px solid ${c}30`;
   document.getElementById("word-hint").style.color = c;
@@ -301,16 +313,11 @@ function renderStep() {
   document.getElementById("word-main").textContent = w.text;
   document.getElementById("word-reading").textContent = w.reading;
   document.getElementById("word-count").textContent = `${step+1} / ${drill.words.length}`;
-
-  // マイクボタン
   const btn = document.getElementById("mic-btn");
   btn.style.background = c;
   btn.style.boxShadow = `0 4px 20px ${c}44`;
   btn.disabled = false;
-
   document.getElementById("mic-status").textContent = "ボタンを押して声に出して読もう";
-
-  // リセット
   hide("result-box"); hide("error-box"); hide("fb-box");
   renderWave(false);
 }
@@ -319,58 +326,35 @@ function renderStep() {
 function startRecording() {
   if (isRecording) return;
   const SR = window.SpeechRecognition || window.webkitSpeechRecognition;
-  if (!SR) {
-    showError("このブラウザは音声認識に非対応です。Google Chromeをお使いください。");
-    return;
-  }
+  if (!SR) { showError("このブラウザは音声認識に非対応です。Google Chromeをお使いください。"); return; }
   hide("error-box"); hide("result-box"); hide("fb-box");
-
   const rec = new SR();
-  rec.lang = "ja-JP";
-  rec.interimResults = false;
-  rec.continuous = false;
-  rec.maxAlternatives = 3;
-
+  rec.lang = "ja-JP"; rec.interimResults = false; rec.continuous = false; rec.maxAlternatives = 3;
   let got = false;
   rec.onresult = e => {
     got = true;
-    // 全候補から一番マッチするものを選ぶ
     const target = drill.words[step].reading.replace(/\s/g,"");
-    let bestText = e.results[0][0].transcript;
-    let bestConf = e.results[0][0].confidence;
+    let bestText = e.results[0][0].transcript, bestConf = e.results[0][0].confidence;
     let bestSim = similarity(normalize(bestText), target);
-
     for (let i = 0; i < e.results[0].length; i++) {
-      const t = e.results[0][i].transcript;
-      const s = similarity(normalize(t), target);
+      const t = e.results[0][i].transcript, s = similarity(normalize(t), target);
       if (s > bestSim) { bestSim = s; bestText = t; bestConf = e.results[0][i].confidence; }
     }
     finishRecording(bestText, bestConf, bestSim);
   };
   rec.onerror = e => {
     stopRecordingUI();
-    const msgs = {
-      "not-allowed": "マイクへのアクセスが拒否されています。ブラウザのアドレスバー左のアイコンからマイクを「許可」してください。",
-      "no-speech":   "音声が検出されませんでした。マイクに近づいてはっきり話してください。",
-      "network":     "ネットワークエラーです。接続を確認してください。",
-    };
+    const msgs = { "not-allowed":"マイクへのアクセスが拒否されています。ブラウザのアドレスバー左のアイコンからマイクを「許可」してください。","no-speech":"音声が検出されませんでした。マイクに近づいてはっきり話してください。","network":"ネットワークエラーです。接続を確認してください。" };
     showError(msgs[e.error] || `エラー(${e.error})：もう一度お試しください。`);
   };
-  rec.onend = () => {
-    stopRecordingUI();
-    if (!got) showError("音声が検出されませんでした。マイクに近づいて、はっきり話してください。");
-  };
-
+  rec.onend = () => { stopRecordingUI(); if (!got) showError("音声が検出されませんでした。マイクに近づいて、はっきり話してください。"); };
   try {
-    rec.start();
-    isRecording = true;
+    rec.start(); isRecording = true;
     document.getElementById("mic-btn").style.background = "#EF4444";
     document.getElementById("mic-btn").style.boxShadow = "0 0 0 12px rgba(239,68,68,0.15)";
     document.getElementById("mic-status").textContent = "録音中... 話してください";
     renderWave(true);
-  } catch {
-    showError("録音を開始できませんでした。ページを再読み込みしてください。");
-  }
+  } catch { showError("録音を開始できませんでした。ページを再読み込みしてください。"); }
 }
 
 function stopRecordingUI() {
@@ -384,64 +368,48 @@ function stopRecordingUI() {
 // ---- 結果判定 ----
 function finishRecording(text, confidence, sim) {
   stopRecordingUI();
-
-  // 認識結果表示
   document.getElementById("result-word").textContent = `「${text}」`;
   show("result-box");
-
-  // スコア計算（文字一致60% + confidence40%）
   const conf = isNaN(confidence) ? 0.5 : confidence;
   const rawScore = sim * 0.6 + conf * 0.4;
   const stars = rawScore >= 0.9 ? 5 : rawScore >= 0.75 ? 4 : rawScore >= 0.55 ? 3 : rawScore >= 0.35 ? 2 : 1;
   sessionScores.push(stars);
-
-  const target = drill.words[step].text;
-  const tip = drill.words[step].tip;
+  const w = drill.words[step], c = drill.color;
   const fb = document.getElementById("fb-box");
-  const c = drill.color;
-
   let cls, scoreStr, title, msg;
-  if (stars === 5) {
-    cls="perfect"; scoreStr="⭐⭐⭐⭐⭐"; title="完璧です！🎉"; msg=`「${target}」をしっかり発音できました！`;
-  } else if (stars === 4) {
-    cls="good"; scoreStr="⭐⭐⭐⭐"; title="上手です！👍"; msg=`「${target}」の発音がよく聞き取れました。もう一度試すとさらに上達します。`;
-  } else if (stars === 3) {
-    cls="retry"; scoreStr="⭐⭐⭐"; title="もう少し！💪"; msg=`「${target}」に近い音が出ています。はっきり話すとさらによくなります。`;
-  } else if (stars === 2) {
-    cls="retry"; scoreStr="⭐⭐"; title="練習中！🔥"; msg=`「${target}」をゆっくり一音ずつ確認しながら話してみましょう。`;
-  } else {
-    cls="miss"; scoreStr="⭐"; title="もう一度！🎤"; msg=`マイクに近づいて「${target}」（${drill.words[step].reading}）ともう一度試してみましょう。`;
-  }
-
+  if (stars === 5)      { cls="perfect"; scoreStr="⭐⭐⭐⭐⭐"; title="完璧です！🎉"; msg=`「${w.text}」をしっかり発音できました！`; }
+  else if (stars === 4) { cls="good";    scoreStr="⭐⭐⭐⭐";   title="上手です！👍"; msg=`「${w.text}」の発音がよく聞き取れました。もう一度試すとさらに上達します。`; }
+  else if (stars === 3) { cls="retry";   scoreStr="⭐⭐⭐";     title="もう少し！💪"; msg=`「${w.text}」に近い音が出ています。はっきり話すとさらによくなります。`; }
+  else if (stars === 2) { cls="retry";   scoreStr="⭐⭐";       title="練習中！🔥";   msg=`「${w.text}」をゆっくり一音ずつ確認しながら話してみましょう。`; }
+  else                  { cls="miss";    scoreStr="⭐";         title="もう一度！🎤"; msg=`マイクに近づいて「${w.text}」（${w.reading}）ともう一度試してみましょう。`; }
   fb.className = `fb-box ${cls}`;
   document.getElementById("fb-score").textContent = scoreStr;
   document.getElementById("fb-title").textContent = title;
   document.getElementById("fb-msg").textContent = msg;
 
+  // ヒントテキスト（スコア低いとき）
   const tipEl = document.getElementById("fb-tip");
-  if (stars <= 3 && tip) {
-    tipEl.textContent = "💡 ヒント：" + tip;
-    show("fb-tip");
-  } else { hide("fb-tip"); }
+  if (stars <= 3 && w.tip) { tipEl.textContent = "💡 ヒント：" + w.tip; show("fb-tip"); }
+  else hide("fb-tip");
+
+  // 口腔図（常に表示）
+  const diag = MOUTH_DIAGRAMS[w.diagram];
+  if (diag) {
+    document.getElementById("mouth-svg-container").innerHTML = diag.svg;
+    document.getElementById("mouth-caption").textContent = diag.caption;
+    show("mouth-diagram");
+  } else hide("mouth-diagram");
 
   const nextBtn = document.getElementById("next-btn");
   nextBtn.style.background = c;
-  if (step >= drill.words.length - 1) {
-    nextBtn.textContent = "結果を見る 🎊";
-  } else {
-    nextBtn.textContent = "次の言葉へ →";
-  }
+  nextBtn.textContent = step >= drill.words.length - 1 ? "結果を見る 🎊" : "次の言葉へ →";
   show("fb-box");
 }
 
 // ---- 次の単語 ----
 function nextWord() {
-  if (step >= drill.words.length - 1) {
-    showComplete();
-  } else {
-    step++;
-    renderStep();
-  }
+  if (step >= drill.words.length - 1) showComplete();
+  else { step++; renderStep(); }
 }
 
 // ---- 完了画面 ----
@@ -450,48 +418,33 @@ function showComplete() {
   const avg = sessionScores.length ? sessionScores.reduce((a,b)=>a+b,0)/sessionScores.length : 0;
   const perfect = sessionScores.filter(s=>s===5).length;
   const stars = Math.round(avg);
-
   document.getElementById("complete-title").textContent = drill.sound + "の練習 完了！";
   document.getElementById("complete-score").textContent = "⭐".repeat(stars) + "☆".repeat(5-stars);
   document.getElementById("complete-score-label").textContent = `平均スコア ${avg.toFixed(1)} / 5.0`;
-
-  let msg = "";
-  if (avg >= 4.5) msg = `素晴らしい！${drill.words.length}単語すべてをよく発音できました。次のカテゴリにもチャレンジしてみましょう！`;
-  else if (avg >= 3.5) msg = `上手くできています！特に難しかった単語をもう一度練習するとさらに上達します。`;
-  else if (avg >= 2.5) msg = `練習を続けましょう！毎日少しずつ声に出すことで必ず上達します。`;
-  else msg = `焦らず大丈夫です。ゆっくり一音ずつ確認しながら、また挑戦してみましょう！`;
-
+  let msg = avg >= 4.5 ? `素晴らしい！${drill.words.length}単語すべてをよく発音できました。次のカテゴリにもチャレンジしてみましょう！`
+    : avg >= 3.5 ? `上手くできています！特に難しかった単語をもう一度練習するとさらに上達します。`
+    : avg >= 2.5 ? `練習を続けましょう！毎日少しずつ声に出すことで必ず上達します。`
+    : `焦らず大丈夫です。ゆっくり一音ずつ確認しながら、また挑戦してみましょう！`;
   if (perfect > 0) msg = `完璧な発音が${perfect}回ありました！ ` + msg;
   document.getElementById("complete-msg").textContent = msg;
 }
 
 // ---- ユーティリティ ----
-function normalize(s) {
-  return s.replace(/\s/g,"").replace(/[ァ-ン]/g, c => String.fromCharCode(c.charCodeAt(0)-0x60));
-}
+function normalize(s) { return s.replace(/\s/g,"").replace(/[ァ-ン]/g, c => String.fromCharCode(c.charCodeAt(0)-0x60)); }
 function similarity(a, b) {
   if (!a || !b) return 0;
   if (a === b) return 1;
-  // 含まれているかチェック
   if (b.includes(a) || a.includes(b)) return 0.85;
-  // 文字単位の一致率
-  let match = 0;
-  const aArr = [...a], bArr = [...b];
-  aArr.forEach(c => { const i = bArr.indexOf(c); if(i>=0){ match++; bArr.splice(i,1); } });
+  let match = 0; const aArr=[...a], bArr=[...b];
+  aArr.forEach(c => { const i=bArr.indexOf(c); if(i>=0){ match++; bArr.splice(i,1); } });
   return match / Math.max(a.length, b.length);
 }
 function show(id) { document.getElementById(id).style.display = "block"; }
 function hide(id) { document.getElementById(id).style.display = "none"; }
-function showError(msg) {
-  const el = document.getElementById("error-box");
-  el.innerHTML = `⚠️ ${msg}`;
-  el.style.display = "block";
-}
+function showError(msg) { const el=document.getElementById("error-box"); el.innerHTML=`⚠️ ${msg}`; el.style.display="block"; }
 function renderWave(active) {
   document.getElementById("waveform").innerHTML =
-    Array.from({length:18},(_,i)=>
-      `<div class="wave-bar${active?' active':''}" style="animation-delay:${i*0.06}s;animation-duration:${0.4+(i%4)*0.12}s"></div>`
-    ).join("");
+    Array.from({length:18},(_,i)=>`<div class="wave-bar${active?' active':''}" style="animation-delay:${i*0.06}s;animation-duration:${0.4+(i%4)*0.12}s"></div>`).join("");
 }
 renderWave(false);
 </script>
