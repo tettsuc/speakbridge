@@ -1,0 +1,574 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SpeakBridge - 言語訓練パートナー</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: 'Hiragino Sans', 'Meiryo', sans-serif;
+    background: #F0F4F8;
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+  }
+  #app {
+    width: 100%;
+    max-width: 440px;
+    background: #fff;
+    min-height: 100vh;
+    box-shadow: 0 0 40px rgba(0,0,0,0.1);
+    position: relative;
+    display: flex;
+    flex-direction: column;
+  }
+  .screen { display: none; flex-direction: column; flex: 1; }
+  .screen.active { display: flex; }
+
+  /* ホーム */
+  .home-scroll { overflow-y: auto; padding: 32px 22px 40px; flex: 1; }
+  .logo { font-size: 30px; font-weight: 900; color: #1E293B; letter-spacing: -1px; }
+  .logo-sub { font-size: 13px; color: #64748B; margin-top: 3px; margin-bottom: 28px; }
+  .my-sounds {
+    background: linear-gradient(135deg, #EFF6FF, #F0F9FF);
+    border: 1px solid #BFDBFE; border-radius: 16px; padding: 14px 16px; margin-bottom: 26px;
+  }
+  .my-sounds-title { font-size: 12px; font-weight: 700; color: #3B82F6; margin-bottom: 8px; }
+  .section-title { font-size: 14px; font-weight: 800; color: #1E293B; margin-bottom: 12px; }
+  .card-list { display: flex; flex-direction: column; gap: 8px; margin-bottom: 28px; }
+  .card {
+    display: flex; align-items: center; justify-content: space-between;
+    background: #fff; border: 1.5px solid #E2E8F0; border-radius: 14px;
+    padding: 14px 16px; cursor: pointer; text-align: left;
+    box-shadow: 0 1px 4px rgba(0,0,0,0.05); transition: transform 0.1s, box-shadow 0.1s;
+  }
+  .card:active { transform: scale(0.98); }
+  .card-label { font-size: 13px; color: #64748B; margin-bottom: 2px; }
+  .card-title { font-size: 15px; font-weight: 700; color: #1E293B; }
+  .card-sub { font-size: 12px; color: #64748B; margin-top: 2px; }
+  .card-arrow {
+    border-radius: 10px; padding: 6px 12px; font-size: 12px; font-weight: 700; white-space: nowrap;
+  }
+  .tag {
+    display: inline-block; font-size: 11px; padding: 2px 8px; border-radius: 99px;
+    font-weight: 700; margin-right: 4px; margin-top: 4px;
+  }
+
+  /* ドリル・会話 共通ヘッダー */
+  .screen-header {
+    padding: 14px 20px; border-bottom: 1px solid #E2E8F0; background: #fff; flex-shrink: 0;
+  }
+  .back-btn {
+    background: none; border: none; cursor: pointer; color: #64748B;
+    font-size: 13px; padding: 0; margin-bottom: 6px; font-family: inherit;
+  }
+  .screen-header-title { font-size: 16px; font-weight: 800; color: #1E293B; }
+
+  /* ドリル */
+  .drill-body { flex: 1; overflow-y: auto; padding: 22px; }
+  .drill-sound-label { font-size: 13px; font-weight: 700; margin-bottom: 2px; }
+  .drill-sound-sub { font-size: 20px; font-weight: 900; color: #1E293B; margin-bottom: 20px; }
+  .progress-bar { display: flex; gap: 5px; margin-bottom: 24px; }
+  .progress-seg { flex: 1; height: 4px; border-radius: 2px; background: #E2E8F0; transition: background 0.3s; }
+  .word-card {
+    border-radius: 20px; padding: 28px 24px; text-align: center; margin-bottom: 26px;
+  }
+  .word-card-hint { font-size: 12px; font-weight: 700; margin-bottom: 8px; }
+  .word-card-word { font-size: 54px; font-weight: 900; color: #1E293B; letter-spacing: 6px; }
+  .word-card-count { font-size: 12px; color: #94A3B8; margin-top: 8px; }
+
+  /* マイクボタン */
+  .mic-area { text-align: center; margin-bottom: 18px; }
+  .mic-btn {
+    border: none; border-radius: 50%; width: 80px; height: 80px;
+    font-size: 32px; cursor: pointer; color: #fff;
+    transition: all 0.2s; position: relative;
+  }
+  .mic-btn:disabled { opacity: 0.5; cursor: not-allowed; }
+  .mic-label { font-size: 13px; color: #64748B; margin-top: 10px; }
+
+  /* 波形 */
+  .waveform { display: flex; align-items: center; justify-content: center; gap: 3px; height: 34px; margin: 8px 0; }
+  .wave-bar { width: 4px; border-radius: 2px; background: #CBD5E1; height: 25%; transition: background 0.2s; }
+  .wave-bar.active { background: #3B82F6; animation: waveAnim 0.5s ease-in-out infinite alternate; }
+  @keyframes waveAnim { from { transform: scaleY(0.5); } to { transform: scaleY(1.8); } }
+
+  /* 認識結果 */
+  .result-box {
+    background: #F8FAFC; border: 1px solid #E2E8F0; border-radius: 14px;
+    padding: 12px 16px; margin-bottom: 14px;
+  }
+  .result-label { font-size: 11px; color: #94A3B8; margin-bottom: 4px; }
+  .result-text { font-size: 22px; font-weight: 700; color: #1E293B; }
+
+  /* フィードバック */
+  .feedback-box {
+    background: #F0FDF4; border: 1px solid #BBF7D0; border-radius: 16px; padding: 16px; margin-bottom: 16px;
+  }
+  .feedback-score { font-size: 18px; margin-bottom: 8px; }
+  .feedback-good { font-size: 14px; color: #15803D; margin-bottom: 6px; }
+  .feedback-suggestion { font-size: 13px; color: #92400E; background: #FFFBEB; border-radius: 8px; padding: 8px 10px; margin-bottom: 8px; }
+  .feedback-next { font-size: 12px; color: #64748B; margin-top: 6px; }
+  .feedback-next strong { color: #1E293B; }
+  .next-btn {
+    width: 100%; padding: 13px; color: #fff; border: none; border-radius: 12px;
+    font-weight: 700; font-size: 14px; cursor: pointer; margin-top: 12px; font-family: inherit;
+  }
+
+  /* エラー */
+  .error-box {
+    background: #FEF2F2; border: 1px solid #FECACA; border-radius: 12px;
+    padding: 10px 14px; margin-bottom: 14px; font-size: 13px; color: #DC2626;
+  }
+
+  /* 会話 */
+  .chat-body { flex: 1; overflow-y: auto; padding: 16px; background: #F8FAFC; }
+  .bubble-wrap { display: flex; margin-bottom: 10px; }
+  .bubble-wrap.user { justify-content: flex-end; }
+  .bubble-wrap.assistant { justify-content: flex-start; }
+  .bubble {
+    max-width: 78%; padding: 11px 15px; font-size: 15px; line-height: 1.6;
+    box-shadow: 0 1px 4px rgba(0,0,0,0.07);
+  }
+  .bubble.user { background: #3B82F6; color: #fff; border-radius: 18px 18px 4px 18px; }
+  .bubble.assistant { background: #fff; color: #1E293B; border-radius: 18px 18px 18px 4px; }
+  .typing { background: #fff; color: #94A3B8; border-radius: 18px 18px 18px 4px; padding: 11px 15px; font-size: 14px; box-shadow: 0 1px 4px rgba(0,0,0,0.07); }
+  .chat-feedback {
+    background: #FFFBEB; border: 1px solid #FDE68A; border-radius: 14px; padding: 14px; margin: 8px 0;
+  }
+  .chat-feedback-title { font-size: 12px; font-weight: 700; color: #92400E; margin-bottom: 6px; }
+  .chat-footer {
+    padding: 14px 16px; background: #fff; border-top: 1px solid #E2E8F0; flex-shrink: 0;
+  }
+  .chat-controls { display: flex; gap: 10px; align-items: center; }
+  .chat-mic-btn {
+    flex: 1; padding: 14px; color: #fff; border: none; border-radius: 14px;
+    font-weight: 700; font-size: 15px; cursor: pointer; font-family: inherit; transition: all 0.2s;
+  }
+  .addl-btn {
+    padding: 14px 16px; background: #FFFBEB; color: #92400E;
+    border: 1px solid #FDE68A; border-radius: 14px; font-weight: 700;
+    font-size: 13px; cursor: pointer; font-family: inherit;
+  }
+  .last-text { font-size: 11px; color: #94A3B8; text-align: center; margin-top: 6px; }
+
+  /* loading */
+  .loading { text-align: center; color: #94A3B8; font-size: 14px; padding: 8px 0; }
+</style>
+</head>
+<body>
+<div id="app">
+
+  <!-- ホーム画面 -->
+  <div id="screen-home" class="screen active">
+    <div class="home-scroll">
+      <div class="logo">SpeakBridge</div>
+      <div class="logo-sub">言語訓練パートナー</div>
+
+      <div class="my-sounds">
+        <div class="my-sounds-title">🎯 あなたの練習ポイント</div>
+        <div id="my-sound-tags"></div>
+      </div>
+
+      <div class="section-title">🔤 音の練習</div>
+      <div class="card-list" id="drill-list"></div>
+
+      <div class="section-title">💬 会話練習</div>
+      <div class="card-list" id="scenario-list"></div>
+    </div>
+  </div>
+
+  <!-- ドリル画面 -->
+  <div id="screen-drill" class="screen">
+    <div class="screen-header">
+      <button class="back-btn" onclick="showHome()">← 戻る</button>
+      <div class="screen-header-title" id="drill-header-title"></div>
+    </div>
+    <div class="drill-body">
+      <div class="progress-bar" id="drill-progress"></div>
+      <div class="word-card" id="drill-word-card">
+        <div class="word-card-hint" id="drill-hint"></div>
+        <div class="word-card-word" id="drill-word"></div>
+        <div class="word-card-count" id="drill-count"></div>
+      </div>
+
+      <div class="mic-area">
+        <button class="mic-btn" id="drill-mic-btn" onclick="startDrillRecording()">🎤</button>
+        <div class="waveform" id="drill-waveform"></div>
+        <div class="mic-label" id="drill-mic-label">ボタンを押して話す</div>
+      </div>
+
+      <div id="drill-result" style="display:none" class="result-box">
+        <div class="result-label">🎤 認識された言葉</div>
+        <div class="result-text" id="drill-result-text"></div>
+      </div>
+      <div id="drill-error" style="display:none" class="error-box"></div>
+      <div id="drill-loading" style="display:none" class="loading">分析中...</div>
+      <div id="drill-feedback" style="display:none" class="feedback-box">
+        <div class="feedback-score" id="fb-score"></div>
+        <div class="feedback-good" id="fb-good"></div>
+        <div id="fb-suggestion" class="feedback-suggestion" style="display:none"></div>
+        <div id="fb-next" class="feedback-next" style="display:none"></div>
+        <button class="next-btn" id="drill-next-btn" onclick="nextDrillWord()">次の言葉へ →</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- 会話画面 -->
+  <div id="screen-conv" class="screen">
+    <div class="screen-header">
+      <button class="back-btn" onclick="showHome()">← 戻る</button>
+      <div class="screen-header-title" id="conv-title"></div>
+      <div id="conv-tags" style="margin-top:4px"></div>
+    </div>
+    <div class="chat-body" id="chat-body"></div>
+    <div id="conv-error" style="display:none;padding:8px 16px;font-size:13px;color:#DC2626;background:#FEF2F2;border-top:1px solid #FECACA;"></div>
+    <div class="chat-footer">
+      <div class="waveform" id="conv-waveform"></div>
+      <div class="chat-controls" style="margin-top:10px">
+        <button class="chat-mic-btn" id="conv-mic-btn" onclick="startConvRecording()" style="background:#3B82F6">
+          🎤 話す
+        </button>
+        <button class="addl-btn" id="conv-feedback-btn" onclick="getConvFeedback()" style="display:none">
+          💡 添削
+        </button>
+      </div>
+      <div class="last-text" id="conv-last-text"></div>
+    </div>
+  </div>
+
+</div>
+
+<script>
+// ---- データ ----
+const SCENARIOS = [
+  { id:"hospital", category:"医療・福祉", title:"受付で名前・予約を伝える", level:1, targetSounds:["さ行","た行"], aiRole:"病院の受付スタッフ" },
+  { id:"school", category:"学校・教育", title:"先生に質問する", level:1, targetSounds:["さ行","か行・が行"], aiRole:"学校の先生" },
+  { id:"shopping", category:"日常生活", title:"コンビニで買い物する", level:1, targetSounds:["た行"], aiRole:"コンビニの店員" },
+  { id:"interview", category:"仕事・就活", title:"自己紹介をする", level:2, targetSounds:["さ行","た行","か行・が行"], aiRole:"面接官" },
+];
+const SOUND_DRILLS = [
+  { sound:"さ行", label:"さ・し・す・せ・そ", words:["先生","仕事","相談","食事","準備"], color:"#3B82F6" },
+  { sound:"た行", label:"た・ち・つ・て・と", words:["大切","食べる","伝える","特別","手伝い"], color:"#8B5CF6" },
+  { sound:"か行・が行", label:"か↔が の区別", words:["科学","家具","鏡","学校","記念"], color:"#EC4899" },
+];
+const MY_SOUNDS = ["さ行","た行","か行・が行"];
+const PROMPT_CONV = (role) =>
+`あなたは言語練習アプリSpeakBridgeの会話パートナーです。今は「${role}」の役を演じてください。
+ルール：返答は2〜3文以内の短い日本語。やさしい言葉を使う。ユーザーの意図を推測して会話を続ける。文法ミスを直接指摘しない。`;
+const PROMPT_FB =
+`あなたは言語練習コーチです。ユーザーの発話を分析してJSONのみで返してください。
+形式（前置き・コードブロック不要）：{"score":1〜5,"good":"良かった点一言","suggestion":"改善点一言またはnull","next":"次に試す短文"}`;
+
+// ---- Claude API ----
+async function callClaude(messages, system) {
+  const r = await fetch("https://api.anthropic.com/v1/messages", {
+    method:"POST", headers:{"Content-Type":"application/json"},
+    body: JSON.stringify({ model:"claude-sonnet-4-20250514", max_tokens:1000, system, messages })
+  });
+  const d = await r.json();
+  return (d.content||[]).map(b=>b.text||"").join("");
+}
+
+// ---- 状態 ----
+let currentDrill = null, drillStep = 0;
+let currentScenario = null, convMessages = [], convLastText = "";
+let isRecording = false;
+
+// ---- ホーム初期化 ----
+function initHome() {
+  // 苦手音タグ
+  const tagWrap = document.getElementById("my-sound-tags");
+  tagWrap.innerHTML = MY_SOUNDS.map(s => `<span class="tag" style="background:#DBEAFE;color:#1D4ED8">${s}</span>`).join("");
+  // ドリルカード
+  document.getElementById("drill-list").innerHTML = SOUND_DRILLS.map(d => `
+    <div class="card" onclick="showDrill('${d.sound}')" style="border-color:${d.color}22">
+      <div>
+        <div style="font-size:15px;font-weight:800;color:${d.color}">${d.sound}</div>
+        <div class="card-sub">${d.label}</div>
+      </div>
+      <div class="card-arrow" style="background:${d.color}18;color:${d.color}">練習する →</div>
+    </div>`).join("");
+  // シナリオカード
+  document.getElementById("scenario-list").innerHTML = SCENARIOS.map(s => `
+    <div class="card" onclick="showConv('${s.id}')">
+      <div>
+        <div class="card-label">${s.category}</div>
+        <div class="card-title">${s.title}</div>
+        <div>${s.targetSounds.map(t=>`<span class="tag" style="background:#EEF2FF;color:#4F46E5">${t}</span>`).join("")}</div>
+      </div>
+      <span style="font-size:12px;opacity:0.7">${"⭐".repeat(s.level)}</span>
+    </div>`).join("");
+}
+
+// ---- 画面切り替え ----
+function showHome() {
+  document.querySelectorAll(".screen").forEach(s=>s.classList.remove("active"));
+  document.getElementById("screen-home").classList.add("active");
+}
+function showDrill(sound) {
+  currentDrill = SOUND_DRILLS.find(d=>d.sound===sound);
+  drillStep = 0;
+  document.querySelectorAll(".screen").forEach(s=>s.classList.remove("active"));
+  document.getElementById("screen-drill").classList.add("active");
+  document.getElementById("drill-header-title").textContent = currentDrill.sound + "の練習";
+  renderDrillStep();
+}
+function showConv(id) {
+  currentScenario = SCENARIOS.find(s=>s.id===id);
+  convMessages = [{ role:"assistant", content:`こんにちは！今日は「${currentScenario.title}」の練習をしましょう。私は${currentScenario.aiRole}です。準備ができたら話しかけてください。` }];
+  convLastText = "";
+  document.querySelectorAll(".screen").forEach(s=>s.classList.remove("active"));
+  document.getElementById("screen-conv").classList.add("active");
+  document.getElementById("conv-title").textContent = currentScenario.title;
+  document.getElementById("conv-tags").innerHTML = currentScenario.targetSounds.map(t=>`<span class="tag" style="background:#EEF2FF;color:#4F46E5">${t}</span>`).join("");
+  document.getElementById("conv-feedback-btn").style.display = "none";
+  document.getElementById("conv-last-text").textContent = "";
+  renderChat();
+}
+
+// ---- ドリル描画 ----
+function renderDrillStep() {
+  const d = currentDrill;
+  // 進捗
+  document.getElementById("drill-progress").innerHTML = d.words.map((_,i)=>
+    `<div class="progress-seg" style="background:${i<=drillStep?d.color:'#E2E8F0'}"></div>`).join("");
+  // カード
+  document.getElementById("drill-word-card").style.background = `linear-gradient(135deg,${d.color}18,${d.color}08)`;
+  document.getElementById("drill-word-card").style.border = `2px solid ${d.color}30`;
+  document.getElementById("drill-hint").style.color = d.color;
+  document.getElementById("drill-hint").textContent = "この言葉を声に出して練習しよう";
+  document.getElementById("drill-word").textContent = d.words[drillStep];
+  document.getElementById("drill-count").textContent = `${drillStep+1} / ${d.words.length}`;
+  // ミック
+  document.getElementById("drill-mic-btn").style.background = d.color;
+  document.getElementById("drill-mic-btn").style.boxShadow = `0 4px 16px ${d.color}44`;
+  document.getElementById("drill-mic-label").textContent = "ボタンを押して話す";
+  // リセット
+  document.getElementById("drill-result").style.display = "none";
+  document.getElementById("drill-error").style.display = "none";
+  document.getElementById("drill-loading").style.display = "none";
+  document.getElementById("drill-feedback").style.display = "none";
+  // 波形
+  renderWaveform("drill-waveform", false);
+}
+
+// ---- 波形描画 ----
+function renderWaveform(id, active) {
+  const el = document.getElementById(id);
+  el.innerHTML = Array.from({length:18},(_,i)=>
+    `<div class="wave-bar${active?' active':''}" style="animation-delay:${i*0.06}s;animation-duration:${0.4+(i%4)*0.12}s"></div>`
+  ).join("");
+}
+
+// ---- 音声認識共通 ----
+function createRecognition(onResult, onError) {
+  const SR = window.SpeechRecognition || window.webkitSpeechRecognition;
+  if (!SR) { onError("このブラウザは音声認識に非対応です。Chromeをお使いください。"); return null; }
+  const rec = new SR();
+  rec.lang = "ja-JP";
+  rec.interimResults = false;
+  rec.continuous = false;
+  rec.maxAlternatives = 1;
+  let got = false;
+  rec.onresult = e => { got=true; onResult(e.results[0][0].transcript); };
+  rec.onerror = e => {
+    const m = {
+      "not-allowed":"マイクへのアクセスが拒否されています。URLバーの🔒アイコンからマイクを「許可」してください。",
+      "no-speech":"音声が検出されませんでした。マイクに近づいて、はっきり話してください。",
+      "network":"ネットワークエラーです。接続を確認してください。",
+    };
+    onError(m[e.error]||`エラー(${e.error})：もう一度お試しください。`);
+  };
+  rec.onend = () => { if(!got) onError("音声が検出されませんでした。マイクに近づいて、はっきり話してください。"); };
+  return rec;
+}
+
+// ---- ドリル録音 ----
+function startDrillRecording() {
+  if (isRecording) return;
+  document.getElementById("drill-error").style.display = "none";
+  document.getElementById("drill-result").style.display = "none";
+  document.getElementById("drill-feedback").style.display = "none";
+  const rec = createRecognition(
+    async text => {
+      isRecording = false;
+      renderWaveform("drill-waveform", false);
+      document.getElementById("drill-mic-btn").style.background = currentDrill.color;
+      document.getElementById("drill-mic-btn").disabled = false;
+      document.getElementById("drill-mic-label").textContent = "ボタンを押して話す";
+      document.getElementById("drill-result").style.display = "block";
+      document.getElementById("drill-result-text").textContent = `「${text}」`;
+      await analyzeDrill(text);
+    },
+    msg => {
+      isRecording = false;
+      renderWaveform("drill-waveform", false);
+      document.getElementById("drill-mic-btn").style.background = currentDrill.color;
+      document.getElementById("drill-mic-btn").disabled = false;
+      document.getElementById("drill-mic-label").textContent = "ボタンを押して話す";
+      document.getElementById("drill-error").style.display = "block";
+      document.getElementById("drill-error").textContent = "⚠️ " + msg;
+    }
+  );
+  if (!rec) return;
+  try {
+    rec.start();
+    isRecording = true;
+    document.getElementById("drill-mic-btn").style.background = "#EF4444";
+    document.getElementById("drill-mic-btn").style.boxShadow = "0 0 0 10px rgba(239,68,68,0.15)";
+    document.getElementById("drill-mic-btn").disabled = false;
+    document.getElementById("drill-mic-label").textContent = "録音中... 話してください";
+    renderWaveform("drill-waveform", true);
+  } catch(e) {
+    document.getElementById("drill-error").style.display = "block";
+    document.getElementById("drill-error").textContent = "⚠️ 録音を開始できませんでした。ページを再読み込みしてください。";
+  }
+}
+
+async function analyzeDrill(text) {
+  document.getElementById("drill-loading").style.display = "block";
+  try {
+    const prompt = `ユーザーはこの単語を練習しています：「${currentDrill.words[drillStep]}」（${currentDrill.sound}の練習）\nユーザーの発話：「${text}」\nフィードバックをJSONで返してください。`;
+    const raw = await callClaude([{role:"user",content:prompt}], PROMPT_FB);
+    const fb = JSON.parse(raw.replace(/```json|```/g,"").trim());
+    document.getElementById("drill-loading").style.display = "none";
+    document.getElementById("fb-score").textContent = "⭐".repeat(fb.score) + `  スコア ${fb.score}/5`;
+    document.getElementById("fb-good").textContent = "✅ " + fb.good;
+    if (fb.suggestion) {
+      document.getElementById("fb-suggestion").style.display = "block";
+      document.getElementById("fb-suggestion").textContent = "💡 " + fb.suggestion;
+    } else { document.getElementById("fb-suggestion").style.display = "none"; }
+    if (fb.next) {
+      document.getElementById("fb-next").style.display = "block";
+      document.getElementById("fb-next").innerHTML = `次のチャレンジ：<strong>「${fb.next}」</strong>`;
+    } else { document.getElementById("fb-next").style.display = "none"; }
+    const nBtn = document.getElementById("drill-next-btn");
+    nBtn.style.background = currentDrill.color;
+    if (drillStep >= currentDrill.words.length-1) {
+      nBtn.textContent = "完了！🎉"; nBtn.disabled = true; nBtn.style.opacity = "0.5";
+    } else {
+      nBtn.textContent = "次の言葉へ →"; nBtn.disabled = false; nBtn.style.opacity = "1";
+    }
+    document.getElementById("drill-feedback").style.display = "block";
+  } catch {
+    document.getElementById("drill-loading").style.display = "none";
+    document.getElementById("drill-error").style.display = "block";
+    document.getElementById("drill-error").textContent = "⚠️ フィードバックの取得に失敗しました。";
+  }
+}
+
+function nextDrillWord() {
+  if (drillStep < currentDrill.words.length-1) {
+    drillStep++;
+    renderDrillStep();
+  }
+}
+
+// ---- 会話録音 ----
+function startConvRecording() {
+  if (isRecording) return;
+  document.getElementById("conv-error").style.display = "none";
+  const btn = document.getElementById("conv-mic-btn");
+  const rec = createRecognition(
+    async text => {
+      isRecording = false;
+      btn.style.background = "#3B82F6"; btn.textContent = "🎤 話す"; btn.disabled = false;
+      renderWaveform("conv-waveform", false);
+      convLastText = text;
+      document.getElementById("conv-last-text").textContent = `最後の発話：「${text}」`;
+      document.getElementById("conv-feedback-btn").style.display = "block";
+      await sendConvMessage(text);
+    },
+    msg => {
+      isRecording = false;
+      btn.style.background = "#3B82F6"; btn.textContent = "🎤 話す"; btn.disabled = false;
+      renderWaveform("conv-waveform", false);
+      document.getElementById("conv-error").style.display = "block";
+      document.getElementById("conv-error").textContent = "⚠️ " + msg;
+    }
+  );
+  if (!rec) return;
+  try {
+    rec.start();
+    isRecording = true;
+    btn.style.background = "#EF4444"; btn.textContent = "🔴 録音中..."; btn.disabled = false;
+    renderWaveform("conv-waveform", true);
+  } catch {
+    document.getElementById("conv-error").style.display = "block";
+    document.getElementById("conv-error").textContent = "⚠️ 録音を開始できませんでした。";
+  }
+}
+
+async function sendConvMessage(text) {
+  convMessages.push({role:"user", content:text});
+  renderChat();
+  const btn = document.getElementById("conv-mic-btn");
+  btn.disabled = true;
+  document.getElementById("conv-feedback-btn").disabled = true;
+  // typing表示
+  const typing = document.createElement("div");
+  typing.className = "bubble-wrap assistant"; typing.id = "typing-indicator";
+  typing.innerHTML = `<div class="typing">考え中...</div>`;
+  document.getElementById("chat-body").appendChild(typing);
+  scrollChat();
+  try {
+    const reply = await callClaude(convMessages.map(m=>({role:m.role,content:m.content})), PROMPT_CONV(currentScenario.aiRole));
+    convMessages.push({role:"assistant", content:reply});
+  } catch {
+    document.getElementById("conv-error").style.display = "block";
+    document.getElementById("conv-error").textContent = "⚠️ 返答の取得に失敗しました。";
+  }
+  const ti = document.getElementById("typing-indicator");
+  if (ti) ti.remove();
+  btn.disabled = false;
+  document.getElementById("conv-feedback-btn").disabled = false;
+  renderChat();
+}
+
+async function getConvFeedback() {
+  if (!convLastText) return;
+  const btn = document.getElementById("conv-mic-btn");
+  btn.disabled = true;
+  try {
+    const prompt = `ユーザーの発話：「${convLastText}」\nシナリオ：${currentScenario.title}\n苦手な音：${currentScenario.targetSounds.join("、")}\nフィードバックをJSONで返してください。`;
+    const raw = await callClaude([{role:"user",content:prompt}], PROMPT_FB);
+    const fb = JSON.parse(raw.replace(/```json|```/g,"").trim());
+    const fbEl = document.createElement("div");
+    fbEl.className = "chat-feedback";
+    fbEl.innerHTML = `
+      <div class="chat-feedback-title">💡 添削フィードバック</div>
+      <div style="font-size:14px;color:#78350F;margin-bottom:4px">✅ ${fb.good}</div>
+      ${fb.suggestion ? `<div style="font-size:13px;color:#92400E">📝 ${fb.suggestion}</div>` : ""}
+      <div style="font-size:12px;color:#64748B;margin-top:6px">スコア：${"⭐".repeat(fb.score)}</div>`;
+    document.getElementById("chat-body").appendChild(fbEl);
+    scrollChat();
+  } catch {
+    document.getElementById("conv-error").style.display = "block";
+    document.getElementById("conv-error").textContent = "⚠️ フィードバックの取得に失敗しました。";
+  }
+  btn.disabled = false;
+}
+
+function renderChat() {
+  const body = document.getElementById("chat-body");
+  // typing以外を再描画
+  const typing = document.getElementById("typing-indicator");
+  body.innerHTML = convMessages.map(m => `
+    <div class="bubble-wrap ${m.role}">
+      <div class="bubble ${m.role}">${m.content}</div>
+    </div>`).join("");
+  if (typing) body.appendChild(typing);
+  scrollChat();
+}
+function scrollChat() {
+  const b = document.getElementById("chat-body");
+  b.scrollTop = b.scrollHeight;
+}
+
+// ---- 起動 ----
+initHome();
+</script>
+</body>
+</html>
